@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Todo } from '../model/todo';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  todoList: Todo[] = [];
+  newTodo: string = "";
 
-  constructor() {}
+  constructor() { }
 
+  addTodo() {
+    if (this.newTodo.trim()) {
+      this.todoList.push({ name: this.newTodo.trim(), completed: false });
+      this.newTodo = "";
+    }
+  }
+
+  deleteTodo(todo: Todo) {
+    this.todoList = this.todoList.filter(item => item !== todo);
+  }
 }
