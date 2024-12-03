@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { Todo } from '../model/todo';
+import { Router } from '@angular/router';
+import { TodoService } from '../todo.service';
+import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -7,19 +11,35 @@ import { Todo } from '../model/todo';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  todoList: Todo[] = [];
-  newTodo: string = "";
+  todos: Todo[] = [];
+  newTodoName: string = "";
 
-  constructor() { }
+  constructor(private router: Router, private todoService: TodoService, private navCtrl: NavController) { }
 
-  addTodo() {
-    if (this.newTodo.trim()) {
-      this.todoList.push({ name: this.newTodo.trim(), completed: false });
-      this.newTodo = "";
-    }
+  ngOnInit() {
+    this.loadTodos();
   }
 
-  deleteTodo(todo: Todo) {
-    this.todoList = this.todoList.filter(item => item !== todo);
+  loadTodos() {
+    this.todos = this.todoService.getTodos();
+  }
+
+  addTodo() {
+    const newTodo = {
+      name: this.newTodoName,
+      isCompleted: false,
+      createdAt: new Date(),
+    };
+    this.todoService.addTodo(newTodo);
+    this.loadTodos();
+  }
+
+  deleteTodo(name: string) {
+    this.todoService.deleteTodo(name);
+    this.loadTodos();
+  }
+
+  goToDetails(name: string) {
+    this.router.navigate(["/todo-details", name]);
   }
 }

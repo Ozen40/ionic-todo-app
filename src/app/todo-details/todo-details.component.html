@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Détails du To-Do</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="todo">
+    <ion-card-header>
+      <ion-card-title>{{ todo.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Créé le :</strong> {{ todo.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Statut :</strong> {{ todo.isCompleted ? 'Complété' : 'En cours' }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
