@@ -10,14 +10,14 @@
       <ion-card-title>{{ todo.name }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Créé le :</strong> {{ todo.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Créé le :</strong> {{ todo.creationDate | date:'dd/MM/yyyy HH:mm' }}</p>
       <p><strong>Statut :</strong> {{ todo.isCompleted ? 'Complété' : 'En cours' }}</p>
     </ion-card-content>
     <ion-button (click)="openEditModal()">Modifier</ion-button>
   </ion-card>
 </ion-content>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()" backdropDismiss="false">
     <ng-template>
       <ion-header>

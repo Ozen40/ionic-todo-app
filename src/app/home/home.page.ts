@@ -3,6 +3,7 @@ import { Todo } from '../model/todo';
 import { Router } from '@angular/router';
 import { TodoService } from '../todo.service';
 import { NavController } from '@ionic/angular';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class HomePage {
   todos: Todo[] = [];
   newTodoName: string = "";
 
-  constructor(private router: Router, private todoService: TodoService, private navCtrl: NavController) { }
+  constructor(private router: Router, private todoService: TodoService, private navCtrl: NavController, private authService: AuthService) { }
 
   ngOnInit() {
     this.loadTodos();
@@ -28,7 +29,6 @@ export class HomePage {
     const newTodo: Todo = {
       id: Date.now().toString(),
       name: this.newTodoName,
-      description: "",
       isCompleted: false,
       creationDate: new Date(),
     };
@@ -44,5 +44,13 @@ export class HomePage {
 
   goToDetails(id: string) {
     this.router.navigate(["/todo-details", id]);
+  }
+
+  login() {
+    this.authService.login();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
