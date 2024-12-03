@@ -35,8 +35,8 @@ export class TodoService {
     }
   }
 
-  getTodoByName(name: string) {
+  getTodoById(id: string) {
     const todos = this.getTodos();
-    return todos.find(todo => todo.name === name);
+    return todos.find(todo => todo.id === id);
   }
 }

@@ -15,22 +15,22 @@
 
   <div id="container">
     <ion-item>
-      <ion-input placeholder="Add a new todo" [(ngModel)]="newTodoName" (keyup.enter)="addTodo()"></ion-input>
-      <ion-button (click)="addTodo()">Add</ion-button>
+      <form (ngSubmit)="addTodo()" #todoForm="ngForm">
+        <ion-input placeholder="Add a new todo" [(ngModel)]="newTodoName" name="todoName" required #todoInput="ngModel">
+        </ion-input>
+        <ion-button type="submit" [disabled]="todoForm.invalid">Add</ion-button>
+      </form>
     </ion-item>
 
     <ion-list id="list">
       <ion-item *ngFor="let todo of todos">
-        <ion-label [ngClass]="{ 'completed': todo.isCompleted }" (click)="goToDetails(todo.name)">{{ todo.name
+        <ion-label [ngClass]="{ 'completed': todo.isCompleted }" (click)="goToDetails(todo.id)">{{ todo.name
           }}</ion-label>
         <ion-checkbox slot="start" [(ngModel)]="todo.isCompleted"></ion-checkbox>
-        <ion-button fill="clear">
-          <ion-icon name="pencil"></ion-icon>
-        </ion-button>
-        <ion-button color="danger" fill="clear" (click)="deleteTodo(todo.name)">
+        <ion-label>{{ todo.creationDate | date:'dd/MM/yyyy HH:mm' }}</ion-label>
+        <ion-button color="danger" fill="clear" (click)="deleteTodo(todo.id)">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
-        <ion-label>{{ todo.creationDate | date:'dd/MM/yyyy HH:mm' }}</ion-label>
       </ion-item>
     </ion-list>
 

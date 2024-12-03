@@ -13,7 +13,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'todo-details/:name',
+    path: 'todo-details/:id',
     component: TodoDetailsComponent,
     pathMatch: 'full'
   },

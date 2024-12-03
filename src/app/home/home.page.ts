@@ -25,21 +25,24 @@ export class HomePage {
   }
 
   addTodo() {
-    const newTodo = {
+    const newTodo: Todo = {
+      id: Date.now().toString(),
       name: this.newTodoName,
+      description: "",
       isCompleted: false,
-      createdAt: new Date(),
+      creationDate: new Date(),
     };
     this.todoService.addTodo(newTodo);
     this.loadTodos();
+    this.newTodoName = ""
   }
 
-  deleteTodo(name: string) {
-    this.todoService.deleteTodo(name);
+  deleteTodo(id: string) {
+    this.todoService.deleteTodo(id);
     this.loadTodos();
   }
 
-  goToDetails(name: string) {
-    this.router.navigate(["/todo-details", name]);
+  goToDetails(id: string) {
+    this.router.navigate(["/todo-details", id]);
   }
 }
