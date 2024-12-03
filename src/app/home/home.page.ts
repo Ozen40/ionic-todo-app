@@ -19,6 +19,9 @@ export class HomePage {
 
   ngOnInit() {
     this.loadTodos();
+    this.todoService.todos$.subscribe(todos => {
+      this.todos = todos;
+    });
   }
 
   loadTodos() {

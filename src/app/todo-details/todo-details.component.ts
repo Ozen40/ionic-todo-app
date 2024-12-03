@@ -18,7 +18,8 @@ export class TodoDetailsComponent implements OnInit {
   modal!: IonModal;
 
   todo: any;
-  updatedTodo = "";
+  updatedTodoName = "";
+  updatedTodoCompletion = false;
   isModalOpen = false;
 
   constructor(private route: ActivatedRoute, private todoService: TodoService) { }
@@ -27,14 +28,15 @@ export class TodoDetailsComponent implements OnInit {
     const todoId = this.route.snapshot.paramMap.get('id');
     if (todoId != null) {
       this.todo = this.todoService.getTodoById(todoId);
-      if (this.todo) {
-        this.updatedTodo = this.todo.name;
-      }
     }
   }
 
   openEditModal() {
-    this.isModalOpen = true;
+    if (this.todo) {
+      this.updatedTodoName = this.todo.name;
+      this.updatedTodoCompletion = this.todo.isCompleted;
+      this.isModalOpen = true;
+    }
   }
 
   closeModal() {
@@ -42,8 +44,9 @@ export class TodoDetailsComponent implements OnInit {
   }
 
   saveChanges() {
-    if (this.updatedTodo.trim()) {
-      this.todo.name = this.updatedTodo.trim();
+    if (this.updatedTodoName.trim()) {
+      this.todo.name = this.updatedTodoName.trim();
+      this.todo.isCompleted = this.updatedTodoCompletion;
       this.todoService.updateTodo(this.todo);
       this.closeModal();
     } else {

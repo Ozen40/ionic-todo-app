@@ -1,42 +1,48 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Todo } from './model/todo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
   private storageKey = 'todos';
+  private todosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject<Todo[]>(this.loadTodosFromStorage());
+
+  todos$ = this.todosSubject.asObservable();
 
   constructor() { }
 
-  getTodos(): any[] {
+  private loadTodosFromStorage(): Todo[] {
     const todos = localStorage.getItem(this.storageKey);
     return todos ? JSON.parse(todos) : [];
   }
 
-  addTodo(todo: any) {
-    const todos = this.getTodos();
-    todos.push(todo);
+  private saveTodosToStorage(todos: Todo[]): void {
     localStorage.setItem(this.storageKey, JSON.stringify(todos));
+    this.todosSubject.next(todos);
   }
 
-  deleteTodo(id: string) {
-    const todos = this.getTodos();
-    const updatedTodos = todos.filter(todo => todo.id !== id);
-    localStorage.setItem(this.storageKey, JSON.stringify(updatedTodos));
+  getTodos(): Todo[] {
+    return this.todosSubject.getValue();
   }
 
-  updateTodo(updatedTodo: any) {
-    const todos = this.getTodos();
-    const index = todos.findIndex(todo => todo.id === updatedTodo.id);
-    if (index !== -1) {
-      todos[index] = updatedTodo;
-      localStorage.setItem(this.storageKey, JSON.stringify(todos));
-    }
+  addTodo(todo: Todo): void {
+    const todos = [...this.getTodos(), todo];
+    this.saveTodosToStorage(todos);
   }
 
-  getTodoById(id: string) {
-    const todos = this.getTodos();
-    return todos.find(todo => todo.id === id);
+  deleteTodo(id: string): void {
+    const todos = this.getTodos().filter(todo => todo.id !== id);
+    this.saveTodosToStorage(todos);
+  }
+
+  updateTodo(updatedTodo: Todo): void {
+    const todos = this.getTodos().map(todo => (todo.id === updatedTodo.id ? updatedTodo : todo));
+    this.saveTodosToStorage(todos);
+  }
+
+  getTodoById(id: string): Todo | undefined {
+    return this.getTodos().find(todo => todo.id === id);
   }
 }
