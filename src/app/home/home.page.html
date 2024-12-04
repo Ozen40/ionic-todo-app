@@ -4,8 +4,11 @@
       TodoApp
     </ion-title>
     <div slot="end">
-      <ion-button (click)="login()">Login</ion-button>
-      <ion-button (click)="logout()">Logout</ion-button>
+      <ion-label>
+        <h2>{{ isAuthenticated ? 'Connecté ✅' : 'Déconnecté ❌' }}</h2>
+      </ion-label>
+      <ion-button *ngIf="!isAuthenticated" (click)="login()">Login</ion-button>
+      <ion-button color="danger" *ngIf="isAuthenticated" (click)="logout()">Logout</ion-button>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -46,4 +49,3 @@
     </ion-list>
 
   </div>
-</ion-content>

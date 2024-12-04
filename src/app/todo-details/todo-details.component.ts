@@ -3,8 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule, IonModal } from '@ionic/angular';
-import { TodoService } from '../todo.service';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-todo-details',
