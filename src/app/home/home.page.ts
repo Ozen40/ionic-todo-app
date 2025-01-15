@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { LocationService } from '../services/location.service';
 
 
 @Component({
@@ -15,15 +16,23 @@ export class HomePage {
   todos: Todo[] = [];
   newTodoName: string = "";
   isAuthenticated: boolean = false;
+  selectedDate: string = new Date().toISOString();
+  currentCity: string = "";
 
-  constructor(private router: Router, private todoService: TodoService, private authService: AuthService, private notificationService: NotificationService) { }
+  constructor(private router: Router, private todoService: TodoService, private authService: AuthService, private notificationService: NotificationService, private locationService: LocationService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadTodos();
     this.todoService.todos$.subscribe(todos => {
       this.todos = todos;
     });
     this.isConnected();
+    try {
+      this.currentCity = await this.locationService.getCurrentCity();
+      console.log('Ville actuelle :', this.currentCity);
+    } catch (error) {
+      console.error('Erreur lors de l’obtention de la ville', error);
+    }
   }
 
   loadTodos() {
@@ -35,12 +44,14 @@ export class HomePage {
       id: Date.now().toString(),
       name: this.newTodoName,
       isCompleted: false,
-      creationDate: new Date(),
+      creationDate: new Date(this.selectedDate),
+      localisation: this.currentCity
     };
     this.todoService.addTodo(newTodo);
     this.loadTodos();
     this.newTodoName = ""
-    this.planifierNotification(newTodo.name);
+    this.selectedDate = new Date().toISOString();
+    this.notificationAjout(newTodo.name);
   }
 
   deleteTodo(id: string) {
@@ -66,7 +77,7 @@ export class HomePage {
     this.isAuthenticated = this.authService.isConnected();
   }
 
-  planifierNotification(todoName: string) {
+  notificationAjout(todoName: string) {
     this.notificationService.scheduleNotification(
       'Ajout de Todo',
       `Le Todo : "${todoName}" a bien été ajouté`,

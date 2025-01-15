@@ -30,6 +30,7 @@
           #todoInput="ngModel">
         </ion-input>
         <ion-button type="submit" [disabled]="todoForm.invalid">Ajouter</ion-button>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
       </form>
     </ion-item>
 
@@ -47,5 +48,12 @@
         </div>
       </ion-item>
     </ion-list>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetime" presentation="date-time" [(ngModel)]="selectedDate" name="selectedDate">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
 
   </div>

@@ -14,9 +14,11 @@
       <ion-card-title>{{ todo.name }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-label><strong>Créé le :</strong> {{ todo.creationDate | date:'dd/MM/yyyy HH:mm' }}</ion-label>
+      <ion-label><strong>A réaliser pour le :</strong> {{ todo.creationDate | date:'dd/MM/yyyy HH:mm' }}</ion-label>
       <br>
       <ion-label><strong>Statut :</strong> {{ todo.isCompleted ? 'Complété ✅' : 'En cours ❌' }}</ion-label>
+      <br>
+      <ion-label><strong>Lieu de la création :</strong> {{ todo.localisation }} </ion-label>
     </ion-card-content>
     <ion-button (click)="openEditModal()">Modifier</ion-button>
   </ion-card>
