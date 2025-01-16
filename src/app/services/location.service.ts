@@ -9,6 +9,15 @@ export class LocationService {
 
   private NOMINATIM_URL = 'https://nominatim.openstreetmap.org/reverse?format=json';
 
+  async requestPermission() {
+    const result = await Geolocation.requestPermissions();
+    if (result.location === 'granted') {
+      console.log('Permission pour les notifications accordée');
+    } else {
+      console.error('Permission pour les notifications refusée');
+    }
+  }
+
   async getCurrentLocation(): Promise<{ latitude: number; longitude: number }> {
     const coordinates = await Geolocation.getCurrentPosition();
     return {
